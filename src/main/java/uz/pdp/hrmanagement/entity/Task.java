@@ -31,7 +31,7 @@ public class Task {
     private Date deadline;
 
     @Column(nullable = false)
-    private Status status;
+    private Status status = Status.NEW;
 
     @ManyToMany(fetch = FetchType.LAZY)
     private Set<User> users;
