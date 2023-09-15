@@ -18,8 +18,11 @@ import java.util.UUID;
 @Entity(name = "rates")
 public class Rate {
     @Id
+    @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Grade grade;
 
     @OneToMany(mappedBy = "rate", fetch = FetchType.LAZY)

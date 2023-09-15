@@ -10,6 +10,6 @@ import uz.pdp.hrmanagement.validator.IsValidEnum;
 public class RateRequest {
     @NotNull(message = "grade must not be null")
     @NotBlank(message = "grade must not be empty")
-    @IsValidEnum(enumC = Grade.class)
+    @IsValidEnum(enumClazz = Grade.class)
     private Grade grade;
 }

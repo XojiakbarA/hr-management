@@ -19,8 +19,11 @@ import java.util.UUID;
 @Entity(name = "authorities")
 public class Authority implements GrantedAuthority {
     @Id
+    @GeneratedValue
     private UUID id;
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Role name;
 
     @ManyToMany(mappedBy = "authorities", fetch = FetchType.LAZY)

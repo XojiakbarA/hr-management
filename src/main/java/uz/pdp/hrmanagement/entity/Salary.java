@@ -17,6 +17,7 @@ import java.util.UUID;
 @Entity(name = "salaries")
 public class Salary {
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Column(nullable = false)

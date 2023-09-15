@@ -1,9 +1,6 @@
 package uz.pdp.hrmanagement.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -20,6 +17,7 @@ import java.util.UUID;
 @Entity(name = "input-outputs")
 public class InputOutput {
     @Id
+    @GeneratedValue
     private UUID id;
 
     @ManyToOne

@@ -19,6 +19,7 @@ import java.util.UUID;
 @Entity(name = "tasks")
 public class Task {
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Column(nullable = false)
@@ -31,6 +32,7 @@ public class Task {
     private Date deadline;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
 
     @ManyToMany(fetch = FetchType.LAZY)

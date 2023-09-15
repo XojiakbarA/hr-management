@@ -22,6 +22,7 @@ public class UserRequest {
 
     @NotNull(message = "email must not be null", groups = OnCreate.class)
     @Null(message = "email must be null", groups = OnUpdate.class)
+    @Email(regexp = "[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,3}", message = "email is not valid")
     private String email;
 
     @NotNull(message = "lastName must not be null", groups = OnCreate.class)
@@ -30,10 +31,10 @@ public class UserRequest {
     private String password;
 
     @NotNull(message = "rateGrade must not be null", groups = OnCreate.class)
-    @IsValidEnum(enumC = Grade.class)
+    @IsValidEnum(enumClazz = Grade.class)
     private Grade rateGrade;
 
     @NotNull(message = "authorities must not be null", groups = OnCreate.class)
     @NotEmpty(message = "authorities must not be empty")
-    private Set<@IsValidEnum(enumC = Role.class) Role> authorities;
+    private Set<@IsValidEnum(enumClazz = Role.class) Role> authorities;
 }

@@ -23,6 +23,7 @@ import java.util.UUID;
 @Entity(name = "users")
 public class User implements UserDetails {
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Column(nullable = false)
@@ -37,7 +38,7 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Rate rate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -57,7 +58,7 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private Set<Authority> authorities;
 
     @Column(nullable = false)

@@ -30,7 +30,7 @@ public class TaskRequest {
     @IsFuture(message = "deadline must be future")
     private Date deadline;
 
-    @IsValidEnum(enumC = Status.class)
+    @IsValidEnum(enumClazz = Status.class)
     private Status status;
 
     @NotNull(message = "userIds must not be null", groups = OnCreate.class)

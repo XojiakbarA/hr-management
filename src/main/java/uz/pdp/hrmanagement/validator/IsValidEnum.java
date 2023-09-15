@@ -12,8 +12,8 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD, ElementType.ANNOTATION_TYPE, ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IsValidEnum {
-    Class<? extends Enum<?>> enumClass();
-    String message() default "must be any of enum {enumClass}";
+    Class<? extends Enum<?>> enumClazz();
+    String message() default "must be any of enum {enumClazz}";
 
     public Class<?>[] groups() default {};
 

@@ -10,6 +10,6 @@ import uz.pdp.hrmanagement.validator.IsValidEnum;
 public class AuthorityRequest {
     @NotNull(message = "name must not be null")
     @NotBlank(message = "name must not be empty")
-    @IsValidEnum(enumC = Role.class)
+    @IsValidEnum(enumClazz = Role.class)
     private Role name;
 }
