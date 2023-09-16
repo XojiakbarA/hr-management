@@ -3,8 +3,10 @@ package uz.pdp.hrmanagement.dto;
 import lombok.Builder;
 import lombok.Data;
 import uz.pdp.hrmanagement.entity.enums.Grade;
+import uz.pdp.hrmanagement.entity.enums.Role;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -14,6 +16,7 @@ public class UserDTO {
     private String firstName;
     private String lastName;
     private String email;
+    private Set<Role> authorities;
     private Grade rateGrade;
     private Timestamp createdAt;
     private Timestamp updatedAt;

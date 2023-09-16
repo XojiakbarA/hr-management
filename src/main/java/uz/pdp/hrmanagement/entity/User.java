@@ -1,18 +1,14 @@
 package uz.pdp.hrmanagement.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -35,10 +31,10 @@ public class User implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
+    @Column
     private String password;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     private Rate rate;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
@@ -58,8 +54,8 @@ public class User implements UserDetails {
     @UpdateTimestamp
     private Timestamp updatedAt;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    private Set<Authority> authorities;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
 
     @Column(nullable = false)
     private Date accountExpireDate = new Date(System.currentTimeMillis() + (long) 1000 * 60 * 60 * 24 * 30 * 6);
@@ -73,14 +69,13 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private Boolean enabled = false;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
+    public void addAuthority(Authority authority) {
+        this.authorities.add(authority);
+        authority.getUsers().add(this);
     }
-
-    @Override
-    public String getPassword() {
-        return password;
+    public void removeAuthority(Authority authority) {
+        this.authorities.remove(authority);
+        authority.getUsers().remove(this);
     }
 
     @Override

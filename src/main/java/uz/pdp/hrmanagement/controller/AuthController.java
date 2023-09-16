@@ -9,11 +9,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uz.pdp.hrmanagement.service.UserService;
 import uz.pdp.hrmanagement.request.LoginRequest;
 import uz.pdp.hrmanagement.response.AuthResponse;
 import uz.pdp.hrmanagement.security.JWTProvider;
@@ -28,7 +28,7 @@ public class AuthController {
     @Autowired
     private JWTProvider jwtProvider;
     @Autowired
-    private UserService userService;
+    private UserDetailsService userDetailsService;
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
@@ -36,7 +36,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        UserDetails userDetails = userService.loadUserByUsername(request.getEmail());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getEmail());
 
         String token = jwtProvider.generateToken(Map.of("roles", userDetails.getAuthorities()), userDetails);
 
