@@ -10,6 +10,7 @@ import uz.pdp.hrmanagement.entity.enums.Status;
 
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class Task {
     private Status status = Status.NEW;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<User> users;
+    private Set<User> users = new HashSet<>();
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
@@ -45,4 +46,13 @@ public class Task {
     @Column(nullable = false)
     @UpdateTimestamp
     private Timestamp updatedAt;
+
+    public void addUser(User user) {
+        this.users.add(user);
+        user.getTasks().add(this);
+    }
+    public void removeUser(User user) {
+        this.users.remove(user);
+        user.getTasks().remove(this);
+    }
 }

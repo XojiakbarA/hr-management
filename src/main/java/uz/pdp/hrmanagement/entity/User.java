@@ -40,6 +40,7 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<Salary> salaries;
 
+    @EqualsAndHashCode.Exclude
     @ManyToMany(mappedBy = "users", fetch = FetchType.LAZY)
     private Set<Task> tasks;
 

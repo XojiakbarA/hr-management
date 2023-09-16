@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         Authority authority = authorityService.findById(authorityId);
 
-        checkAuthorityForDirector(authority);
+        checkCurrentUserForAddRemove(authority);
 
         user.addAuthority(authority);
         return userMapper.mapToUserDTO(save(user));
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
         User user = findById(userId);
         Authority authority = authorityService.findById(authorityId);
 
-        checkAuthorityForDirector(authority);
+        checkCurrentUserForAddRemove(authority);
 
         user.removeAuthority(authority);
         return userMapper.mapToUserDTO(save(user));
@@ -122,7 +122,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
-    private void checkAuthorityForDirector(Authority authority) {
+    private void checkCurrentUserForAddRemove(Authority authority) {
         if (authority.getName().equals(Role.MANAGER) || authority.getName().equals(Role.DIRECTOR)) {
             boolean isDirector = authService.checkAuthority(Role.DIRECTOR);
             if (!isDirector) {
