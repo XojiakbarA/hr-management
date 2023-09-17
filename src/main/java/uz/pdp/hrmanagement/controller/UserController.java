@@ -11,13 +11,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import uz.pdp.hrmanagement.dto.InputOutputDTO;
+import uz.pdp.hrmanagement.dto.SalaryDTO;
 import uz.pdp.hrmanagement.dto.TaskDTO;
 import uz.pdp.hrmanagement.dto.UserDTO;
 import uz.pdp.hrmanagement.entity.enums.Status;
 import uz.pdp.hrmanagement.marker.OnCreate;
+import uz.pdp.hrmanagement.request.SalaryRequest;
 import uz.pdp.hrmanagement.request.UserRequest;
 import uz.pdp.hrmanagement.response.Response;
 import uz.pdp.hrmanagement.service.InputOutputService;
+import uz.pdp.hrmanagement.service.SalaryService;
 import uz.pdp.hrmanagement.service.TaskService;
 import uz.pdp.hrmanagement.service.UserService;
 
@@ -35,6 +38,8 @@ public class UserController {
     private InputOutputService inputOutputService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private SalaryService salaryService;
 
     @GetMapping
     public ResponseEntity<Response> getAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
@@ -80,6 +85,25 @@ public class UserController {
         Response response = new Response(HttpStatus.ACCEPTED.name());
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{id}/salaries")
+    public ResponseEntity<Response> getSalariesByUserId(@PathVariable UUID id, @RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
+        Page<SalaryDTO> salaries = salaryService.getAllByUserId(PageRequest.of(page, size), id);
+
+        Response response = new Response(HttpStatus.OK.name(), salaries);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Validated(OnCreate.class)
+    @PostMapping("/{id}/salaries")
+    public ResponseEntity<Response> createSalaryToUser(@Valid @RequestBody SalaryRequest request, @PathVariable UUID id) {
+        SalaryDTO salary = salaryService.create(request, id);
+
+        Response response = new Response(HttpStatus.OK.name(), salary);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @GetMapping("/{id}/input-outputs")

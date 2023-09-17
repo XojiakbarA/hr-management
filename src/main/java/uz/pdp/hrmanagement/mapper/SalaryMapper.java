@@ -16,7 +16,9 @@ public class SalaryMapper {
                 .id(salary.getId())
                 .value(salary.getValue())
                 .user(userMapper.mapToUserDTO(salary.getUser()))
-                .takenAt(salary.getTakenAt())
+                .year(salary.getYear())
+                .month(salary.getMonth())
+                .takenAt(salary.getCreatedAt())
                 .build();
     }
 }

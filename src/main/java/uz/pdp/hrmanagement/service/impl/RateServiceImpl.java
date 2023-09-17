@@ -7,12 +7,19 @@ import uz.pdp.hrmanagement.entity.Rate;
 import uz.pdp.hrmanagement.repository.RateRepository;
 import uz.pdp.hrmanagement.service.RateService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
 public class RateServiceImpl implements RateService {
     @Autowired
     private RateRepository rateRepository;
+
+    @Override
+    public List<Rate> findAll() {
+        return rateRepository.findAll();
+    }
+
     @Override
     public Rate findById(UUID id) {
         return rateRepository.findById(id).orElseThrow(

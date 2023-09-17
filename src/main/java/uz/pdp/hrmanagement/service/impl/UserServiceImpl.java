@@ -21,6 +21,7 @@ import uz.pdp.hrmanagement.service.AuthorityService;
 import uz.pdp.hrmanagement.service.RateService;
 import uz.pdp.hrmanagement.service.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -100,6 +101,11 @@ public class UserServiceImpl implements UserService {
         Rate rate = rateService.findById(rateId);
         user.setRate(rate);
         return userMapper.mapToUserDTO(save(user));
+    }
+
+    @Override
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     @Override

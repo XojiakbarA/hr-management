@@ -8,13 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.sql.Timestamp;
-import java.util.Date;
+import java.time.Month;
+import java.time.Year;
 import java.util.UUID;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "salaries")
+@Table(uniqueConstraints = { @UniqueConstraint(name = "UniqueUserIdAndYearAndMonth", columnNames = { "user_id", "year", "month" }) })
 public class Salary {
     @Id
     @GeneratedValue
@@ -27,7 +29,10 @@ public class Salary {
     private User user;
 
     @Column(nullable = false)
-    private Date takenAt = new Date();
+    private Year year;
+
+    @Column(nullable = false)
+    private Month month;
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

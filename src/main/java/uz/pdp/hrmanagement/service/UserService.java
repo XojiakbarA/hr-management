@@ -6,6 +6,7 @@ import uz.pdp.hrmanagement.dto.UserDTO;
 import uz.pdp.hrmanagement.entity.User;
 import uz.pdp.hrmanagement.request.UserRequest;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface UserService {
@@ -16,6 +17,7 @@ public interface UserService {
     UserDTO addAuthority(UUID userId, UUID authorityId);
     UserDTO removeAuthority(UUID userId, UUID authorityId);
     UserDTO setRate(UUID userId, UUID rateId);
+    List<User> findAll();
     User findById(UUID id);
     User findByEmail(String email);
     void deleteById(UUID id);
