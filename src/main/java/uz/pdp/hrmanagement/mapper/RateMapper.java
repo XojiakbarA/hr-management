@@ -13,8 +13,6 @@ public class RateMapper {
                 .id(rate.getId())
                 .grade(rate.getGrade())
                 .value(rate.getGrade().getValue())
-                .createdAt(rate.getCreatedAt())
-                .updatedAt(rate.getUpdatedAt())
                 .build();
     }
 }

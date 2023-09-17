@@ -12,8 +12,6 @@ public class AuthorityMapper {
         return AuthorityDTO.builder()
                 .id(authority.getId())
                 .name(authority.getName())
-                .createdAt(authority.getCreatedAt())
-                .updatedAt(authority.getUpdatedAt())
                 .build();
     }
 }

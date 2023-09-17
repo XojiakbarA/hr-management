@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import uz.pdp.hrmanagement.dto.TaskDTO;
 import uz.pdp.hrmanagement.entity.Task;
+import uz.pdp.hrmanagement.entity.enums.Status;
 import uz.pdp.hrmanagement.request.StatusRequest;
 import uz.pdp.hrmanagement.request.TaskRequest;
 
@@ -13,6 +14,7 @@ import java.util.UUID;
 public interface TaskService {
     Page<TaskDTO> getAll(Pageable pageable);
     List<TaskDTO> getAllByUserEmail(String email);
+    List<TaskDTO> getAllByStatusAndUserId(Status status, UUID userId);
     TaskDTO getById(UUID id);
     TaskDTO create(TaskRequest request);
     TaskDTO update(TaskRequest request, UUID id);

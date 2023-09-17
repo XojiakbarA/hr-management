@@ -4,7 +4,6 @@ import lombok.Builder;
 import lombok.Data;
 import uz.pdp.hrmanagement.entity.enums.Status;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
@@ -18,6 +17,4 @@ public class TaskDTO {
     private Date deadline;
     private Status status;
     private Set<UserDTO> users;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 }

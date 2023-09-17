@@ -3,7 +3,6 @@ package uz.pdp.hrmanagement.dto;
 import lombok.Builder;
 import lombok.Data;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,6 +13,4 @@ public class SalaryDTO {
     private Integer value;
     private UserDTO user;
     private Date takenAt;
-    private Timestamp createdAt;
-    private Timestamp updatedAt;
 }

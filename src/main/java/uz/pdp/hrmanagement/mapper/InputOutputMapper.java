@@ -17,8 +17,6 @@ public class InputOutputMapper {
                 .user(userMapper.mapToUserDTO(inputOutput.getUser()))
                 .visitedAt(inputOutput.getVisitedAt())
                 .leftAt(inputOutput.getLeftAt())
-                .createdAt(inputOutput.getCreatedAt())
-                .updatedAt(inputOutput.getUpdatedAt())
                 .build();
     }
 }

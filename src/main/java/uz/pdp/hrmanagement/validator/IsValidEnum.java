@@ -2,7 +2,6 @@ package uz.pdp.hrmanagement.validator;
 
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import uz.pdp.hrmanagement.validator.impl.IsFutureValidator;
 import uz.pdp.hrmanagement.validator.impl.IsValidEnumValidator;
 
 import java.lang.annotation.*;

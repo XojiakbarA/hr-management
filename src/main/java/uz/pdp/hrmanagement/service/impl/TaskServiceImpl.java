@@ -46,6 +46,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskDTO> getAllByStatusAndUserId(Status status, UUID userId) {
+        return taskRepository.findAllByStatusAndUsers_Id(status, userId).stream().map(t -> taskMapper.mapToTaskDTO(t)).toList();
+    }
+
+    @Override
     public TaskDTO getById(UUID id) {
         return taskMapper.mapToTaskDTO(findById(id));
     }

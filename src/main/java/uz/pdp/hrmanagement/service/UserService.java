@@ -17,6 +17,7 @@ public interface UserService {
     UserDTO removeAuthority(UUID userId, UUID authorityId);
     UserDTO setRate(UUID userId, UUID rateId);
     User findById(UUID id);
+    User findByEmail(String email);
     void deleteById(UUID id);
     User save(User user);
 }

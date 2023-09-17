@@ -21,8 +21,6 @@ public class TaskMapper {
                 .deadline(task.getDeadline())
                 .status(task.getStatus())
                 .users(task.getUsers().stream().map(u -> userMapper.mapToUserDTO(u)).collect(Collectors.toSet()))
-                .createdAt(task.getCreatedAt())
-                .updatedAt(task.getUpdatedAt())
                 .build();
     }
 }

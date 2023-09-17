@@ -9,12 +9,19 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import uz.pdp.hrmanagement.dto.InputOutputDTO;
+import uz.pdp.hrmanagement.dto.TaskDTO;
 import uz.pdp.hrmanagement.dto.UserDTO;
+import uz.pdp.hrmanagement.entity.enums.Status;
 import uz.pdp.hrmanagement.marker.OnCreate;
 import uz.pdp.hrmanagement.request.UserRequest;
 import uz.pdp.hrmanagement.response.Response;
+import uz.pdp.hrmanagement.service.InputOutputService;
+import uz.pdp.hrmanagement.service.TaskService;
 import uz.pdp.hrmanagement.service.UserService;
 
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -24,6 +31,10 @@ import java.util.UUID;
 public class UserController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private InputOutputService inputOutputService;
+    @Autowired
+    private TaskService taskService;
 
     @GetMapping
     public ResponseEntity<Response> getAllUsers(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
@@ -69,6 +80,24 @@ public class UserController {
         Response response = new Response(HttpStatus.ACCEPTED.name());
 
         return new ResponseEntity<>(response, HttpStatus.ACCEPTED);
+    }
+
+    @GetMapping("/{id}/input-outputs")
+    public ResponseEntity<Response> getInputOutputsByUserId(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size, @PathVariable UUID id) {
+        Page<InputOutputDTO> inputOutputs = inputOutputService.getInputOutputsByUserId(PageRequest.of(page, size), id);
+
+        Response response = new Response(HttpStatus.OK.name(), inputOutputs);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/tasks/completed")
+    public ResponseEntity<Response> getCompletedTasksByUserId(@PathVariable UUID id) {
+        List<TaskDTO> tasks = taskService.getAllByStatusAndUserId(Status.COMPLETED, id);
+
+        Response response = new Response(HttpStatus.OK.name(), tasks);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PutMapping("/{userId}/authorities/{authorityId}")

@@ -19,8 +19,6 @@ public class UserMapper {
                 .email(user.getEmail())
                 .authorities(user.getAuthorities().stream().map(Authority::getName).collect(Collectors.toSet()))
                 .rateGrade(user.getRate() != null ? user.getRate().getGrade() : null)
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 }
