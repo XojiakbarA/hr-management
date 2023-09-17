@@ -16,5 +16,6 @@ public class TaskDTO {
     private String description;
     private Date deadline;
     private Status status;
+    private UserDTO createdBy;
     private Set<UserDTO> users;
 }

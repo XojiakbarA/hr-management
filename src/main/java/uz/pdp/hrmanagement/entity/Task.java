@@ -36,8 +36,11 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Status status = Status.NEW;
 
+    @ManyToOne
+    private User user; // who created task
+
     @ManyToMany(fetch = FetchType.LAZY)
-    private Set<User> users = new HashSet<>();
+    private Set<User> users = new HashSet<>(); // whos binded the task
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp

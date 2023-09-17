@@ -59,6 +59,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskDTO create(TaskRequest request) {
         Task task = new Task();
 
+        setUser(task);
         setName(task, request.getName());
         setDescription(task, request.getDescription());
         setDeadline(task, request.getDeadline());
@@ -142,6 +143,10 @@ public class TaskServiceImpl implements TaskService {
                 throw new AccessDeniedException("You cannot add/remove a manager/director to task");
             }
         }
+    }
+    private void setUser(Task task) {
+        User user = userService.findByEmail(authService.getAuthentication().getName());
+        task.setUser(user);
     }
     private void setName(Task task, String name) {
         if (name != null && !name.isBlank()) {

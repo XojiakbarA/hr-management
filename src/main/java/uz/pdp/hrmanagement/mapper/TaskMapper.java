@@ -20,6 +20,7 @@ public class TaskMapper {
                 .description(task.getDescription())
                 .deadline(task.getDeadline())
                 .status(task.getStatus())
+                .createdBy(userMapper.mapToUserDTO(task.getUser()))
                 .users(task.getUsers().stream().map(u -> userMapper.mapToUserDTO(u)).collect(Collectors.toSet()))
                 .build();
     }
