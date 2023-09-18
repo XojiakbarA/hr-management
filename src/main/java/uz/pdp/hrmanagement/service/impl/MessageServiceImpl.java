@@ -13,10 +13,14 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import uz.pdp.hrmanagement.entity.Task;
 import uz.pdp.hrmanagement.entity.User;
+import uz.pdp.hrmanagement.event.TaskDeadlineExpiredEvent;
 import uz.pdp.hrmanagement.event.UserAddedToTaskEvent;
 import uz.pdp.hrmanagement.event.UserCreatedEvent;
 import uz.pdp.hrmanagement.event.UserSetTaskStatusEvent;
 import uz.pdp.hrmanagement.service.MessageService;
+
+import java.util.Map;
+import java.util.Set;
 
 @Service
 public class MessageServiceImpl implements MessageService {
@@ -51,6 +55,17 @@ public class MessageServiceImpl implements MessageService {
         context.setVariable("userWhoSet", e.getUserWhoSet());
         context.setVariable("task", e.getTask());
         sendHtmlMessage(e.getTask().getUser().getEmail(), "Changed Task Status", "changed-task-status", context);
+    }
+
+    @EventListener
+    public void handleTaskDeadlineExpired(TaskDeadlineExpiredEvent e) {
+        Map<User, Set<Task>> tasks = e.getTasks();
+        tasks.forEach((user, iTasks) -> {
+            Context context = new Context();
+            context.setVariable("givenUser", user);
+            context.setVariable("tasks", iTasks);
+            sendHtmlMessage(user.getEmail(), "Task deadline expired", "task-deadline-expired", context);
+        });
     }
 
     @Override

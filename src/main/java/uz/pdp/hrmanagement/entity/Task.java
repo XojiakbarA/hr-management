@@ -39,7 +39,7 @@ public class Task {
     @ManyToOne
     private User user; // who created task
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<User> users = new HashSet<>(); // whos binded the task
 
     @Column(nullable = false, updatable = false)

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 import uz.pdp.hrmanagement.entity.Task;
 import uz.pdp.hrmanagement.entity.User;
 
+import java.util.Map;
+import java.util.Set;
+
 @Component
 public class AppEventPublisher {
     @Autowired
@@ -21,5 +24,9 @@ public class AppEventPublisher {
 
     public void publishUserSetTaskStatusEvent(final Task task, final User userWhoSet) {
         applicationEventPublisher.publishEvent(new UserSetTaskStatusEvent(this, task, userWhoSet));
+    }
+
+    public void publishTaskDeadlineExpiredEvent(final Map<User, Set<Task>> tasks) {
+        applicationEventPublisher.publishEvent(new TaskDeadlineExpiredEvent(this, tasks));
     }
 }

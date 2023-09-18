@@ -8,6 +8,7 @@ import uz.pdp.hrmanagement.entity.enums.Status;
 import uz.pdp.hrmanagement.request.StatusRequest;
 import uz.pdp.hrmanagement.request.TaskRequest;
 
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -15,6 +16,7 @@ public interface TaskService {
     Page<TaskDTO> getAll(Pageable pageable);
     List<TaskDTO> getAllByUserEmail(String email);
     List<TaskDTO> getAllByStatusAndUserId(Status status, UUID userId);
+    List<Task> findAllByDeadlineAfterAndStatusNot(Date date, Status status);
     TaskDTO getById(UUID id);
     TaskDTO create(TaskRequest request);
     TaskDTO update(TaskRequest request, UUID id);
