@@ -15,7 +15,11 @@ public class AppEventPublisher {
         applicationEventPublisher.publishEvent(new UserCreatedEvent(this, email, code));
     }
 
-    public void publishUserAddedToTask(User taskTakenUser, User taskGivenUser, Task task) {
-        applicationEventPublisher.publishEvent(new UserAddedToTaskEvent(this, taskTakenUser, taskGivenUser, task));
+    public void publishUserAddedToTask(final User taskTakenUser,final Task task) {
+        applicationEventPublisher.publishEvent(new UserAddedToTaskEvent(this, taskTakenUser, task));
+    }
+
+    public void publishUserSetTaskStatusEvent(final Task task, final User userWhoSet) {
+        applicationEventPublisher.publishEvent(new UserSetTaskStatusEvent(this, task, userWhoSet));
     }
 }

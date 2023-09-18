@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <p>Hello, <th:block th:text="${givenUser.firstName}"/> <th:block th:text="${givenUser.lastName}"/>!</p>
+    <p>The <b>status</b> of the task given by you has changed</p>
+    <p>Who changed: <b><th:block th:text="${userWhoSet.firstName}"/> <th:block th:text="${userWhoSet.lastName}"/></b></p>
+    <p>Name: <th:block th:text="${task.name}"/></p>
+    <p>Description: <th:block th:text="${task.description}"/></p>
+    <p>Deadline: <b><th:block th:text="${task.deadline}"/></b></p>
+    <p>Status: <b><th:block th:text="${task.status}"/></b></p>
+    <p>Bound Users: <th:block th:each="user, iStat : ${task.users}"><th:block th:text="${user.firstName}"/> <th:block th:text="${user.lastName}"/><th:block th:text="${!iStat.last ? ',' : ''}"/> </th:block></p>
+</body>
+</html>

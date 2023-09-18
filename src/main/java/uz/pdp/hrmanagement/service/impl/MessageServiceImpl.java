@@ -15,6 +15,7 @@ import uz.pdp.hrmanagement.entity.Task;
 import uz.pdp.hrmanagement.entity.User;
 import uz.pdp.hrmanagement.event.UserAddedToTaskEvent;
 import uz.pdp.hrmanagement.event.UserCreatedEvent;
+import uz.pdp.hrmanagement.event.UserSetTaskStatusEvent;
 import uz.pdp.hrmanagement.service.MessageService;
 
 @Service
@@ -37,10 +38,19 @@ public class MessageServiceImpl implements MessageService {
     @EventListener
     public void handleUserAddedToTask(UserAddedToTaskEvent e) {
         Context context = new Context();
-        context.setVariable("givenUser", e.getTaskGivenUser());
+        context.setVariable("givenUser", e.getTask().getUser());
         context.setVariable("takenUser", e.getTaskTakenUser());
         context.setVariable("task", e.getTask());
         sendHtmlMessage(e.getTaskTakenUser().getEmail(), "New Task", "new-task", context);
+    }
+
+    @EventListener
+    public void handleUserSetTaskStatus(UserSetTaskStatusEvent e) {
+        Context context = new Context();
+        context.setVariable("givenUser", e.getTask().getUser());
+        context.setVariable("userWhoSet", e.getUserWhoSet());
+        context.setVariable("task", e.getTask());
+        sendHtmlMessage(e.getTask().getUser().getEmail(), "Changed Task Status", "changed-task-status", context);
     }
 
     @Override

@@ -35,7 +35,8 @@ public class DataLoader implements CommandLineRunner {
         createRates();
         createDirector();
         createManager();
-        createEmployee();
+        createVerifyEmployee();
+        createVerifyManager();
         createEmployees();
         createSalaries();
         createTask();
@@ -46,7 +47,7 @@ public class DataLoader implements CommandLineRunner {
         task.setName("task1");
         task.setDescription("desc1 desc1 desc1 desc1");
         task.setDeadline(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
-        User givenUser = userService.findByEmail("manager@mail.com");
+        User givenUser = userService.findByEmail("akromov.x.1995@gmail.com");
         task.setUser(givenUser);
         taskService.save(task);
     }
@@ -89,13 +90,25 @@ public class DataLoader implements CommandLineRunner {
         user.setVerifyCode(UUID.randomUUID());
         userService.save(user);
     }
-    private void createEmployee() {
+    private void createVerifyEmployee() {
         User user = new User();
         user.setFirstName("zarina");
         user.setLastName("akramova");
         user.setEmail("zarinaakramova5@gmail.com");
         user.setPassword(passwordEncoder.encode("12345"));
         user.addAuthority(authorityService.findByName(Role.EMPLOYEE));
+        user.setEnabled(true);
+        user.setRate(rateService.findAll().get(1));
+        user.setVerifyCode(UUID.randomUUID());
+        userService.save(user);
+    }
+    private void createVerifyManager() {
+        User user = new User();
+        user.setFirstName("xojiakbar");
+        user.setLastName("akramov");
+        user.setEmail("akromov.x.1995@gmail.com");
+        user.setPassword(passwordEncoder.encode("12345"));
+        user.addAuthority(authorityService.findByName(Role.MANAGER));
         user.setEnabled(true);
         user.setRate(rateService.findAll().get(1));
         user.setVerifyCode(UUID.randomUUID());

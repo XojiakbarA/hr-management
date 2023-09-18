@@ -91,7 +91,7 @@ public class TaskServiceImpl implements TaskService {
         task.addUser(user);
         Task savedTask = save(task);
 
-        appEventPublisher.publishUserAddedToTask(user, task.getUser(), savedTask);
+        appEventPublisher.publishUserAddedToTask(user, savedTask);
 
         return taskMapper.mapToTaskDTO(savedTask);
     }
@@ -113,7 +113,14 @@ public class TaskServiceImpl implements TaskService {
                 () -> new EntityNotFoundException("Task with id = " + id + " and users_email = " + email + " not found")
         );
         setStatus(task, Status.valueOf(request.getStatus().toUpperCase()));
-        return taskMapper.mapToTaskDTO(save(task));
+
+        Task savedTask = save(task);
+
+        User userWhoSet = userService.findByEmail(email);
+
+        appEventPublisher.publishUserSetTaskStatusEvent(savedTask, userWhoSet);
+
+        return taskMapper.mapToTaskDTO(savedTask);
     }
 
     @Override
