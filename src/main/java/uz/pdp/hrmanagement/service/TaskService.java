@@ -16,6 +16,7 @@ public interface TaskService {
     Page<TaskDTO> getAll(Pageable pageable);
     List<TaskDTO> getAllByUserEmail(String email);
     List<TaskDTO> getAllByStatusAndUserId(Status status, UUID userId);
+    List<TaskDTO> getAllByDeadlineAfterAndStatusNot(Date date, Status status);
     List<Task> findAllByDeadlineAfterAndStatusNot(Date date, Status status);
     TaskDTO getById(UUID id);
     TaskDTO create(TaskRequest request);

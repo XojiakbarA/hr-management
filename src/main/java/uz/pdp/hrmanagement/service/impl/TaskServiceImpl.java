@@ -54,6 +54,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskDTO> getAllByDeadlineAfterAndStatusNot(Date date, Status status) {
+        return findAllByDeadlineAfterAndStatusNot(date, status).stream().map(t -> taskMapper.mapToTaskDTO(t)).toList();
+    }
+
+    @Override
     public List<Task> findAllByDeadlineAfterAndStatusNot(Date date, Status status) {
         return taskRepository.findAllByDeadlineAfterAndStatusNot(date, status);
     }

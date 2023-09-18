@@ -10,11 +10,14 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import uz.pdp.hrmanagement.dto.TaskDTO;
+import uz.pdp.hrmanagement.entity.enums.Status;
 import uz.pdp.hrmanagement.marker.OnCreate;
 import uz.pdp.hrmanagement.request.TaskRequest;
 import uz.pdp.hrmanagement.response.Response;
 import uz.pdp.hrmanagement.service.TaskService;
 
+import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @Validated
@@ -28,6 +31,15 @@ public class TaskController {
     @GetMapping
     public ResponseEntity<Response> getAllTasks(@RequestParam(defaultValue = "0") Integer page, @RequestParam(defaultValue = "10") Integer size) {
         Page<TaskDTO> tasks = taskService.getAll(PageRequest.of(page, size));
+
+        Response response = new Response(HttpStatus.OK.name(), tasks);
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/deadline-expired")
+    public ResponseEntity<Response> getAllTasksDeadlineExpired() {
+        List<TaskDTO> tasks = taskService.getAllByDeadlineAfterAndStatusNot(new Date(), Status.COMPLETED);
 
         Response response = new Response(HttpStatus.OK.name(), tasks);
 
