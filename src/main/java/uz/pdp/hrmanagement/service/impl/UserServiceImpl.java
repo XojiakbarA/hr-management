@@ -64,14 +64,13 @@ public class UserServiceImpl implements UserService {
         setLastName(user, request.getLastName());
         setEmail(user, request.getEmail());
 
-        UUID uuid = UUID.randomUUID();
-        user.setVerifyCode(uuid);
+        user.setVerifyCode(UUID.randomUUID());
 
-        UserDTO userDTO = userMapper.mapToUserDTO(save(user));
+        User savedUser = save(user);
 
-        appEventPublisher.publishUserCreate(user.getEmail(), uuid.toString());
+        appEventPublisher.publishUserCreated(savedUser.getEmail(), savedUser.getVerifyCode().toString());
 
-        return userDTO;
+        return userMapper.mapToUserDTO(savedUser);
     }
 
     @Override

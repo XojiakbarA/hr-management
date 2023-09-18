@@ -12,6 +12,7 @@ import uz.pdp.hrmanagement.entity.Task;
 import uz.pdp.hrmanagement.entity.User;
 import uz.pdp.hrmanagement.entity.enums.Role;
 import uz.pdp.hrmanagement.entity.enums.Status;
+import uz.pdp.hrmanagement.event.AppEventPublisher;
 import uz.pdp.hrmanagement.mapper.TaskMapper;
 import uz.pdp.hrmanagement.repository.TaskRepository;
 import uz.pdp.hrmanagement.request.StatusRequest;
@@ -34,6 +35,8 @@ public class TaskServiceImpl implements TaskService {
     private AuthService authService;
     @Autowired
     private TaskMapper taskMapper;
+    @Autowired
+    private AppEventPublisher appEventPublisher;
 
     @Override
     public Page<TaskDTO> getAll(Pageable pageable) {
@@ -86,7 +89,11 @@ public class TaskServiceImpl implements TaskService {
         checkCurrentUserForAddRemove(user);
 
         task.addUser(user);
-        return taskMapper.mapToTaskDTO(save(task));
+        Task savedTask = save(task);
+
+        appEventPublisher.publishUserAddedToTask(user, task.getUser(), savedTask);
+
+        return taskMapper.mapToTaskDTO(savedTask);
     }
 
     @Override

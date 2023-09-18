@@ -11,7 +11,10 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import uz.pdp.hrmanagement.event.UserCreateEvent;
+import uz.pdp.hrmanagement.entity.Task;
+import uz.pdp.hrmanagement.entity.User;
+import uz.pdp.hrmanagement.event.UserAddedToTaskEvent;
+import uz.pdp.hrmanagement.event.UserCreatedEvent;
 import uz.pdp.hrmanagement.service.MessageService;
 
 @Service
@@ -25,10 +28,19 @@ public class MessageServiceImpl implements MessageService {
     private String fromEmail;
 
     @EventListener
-    public void handleUserCreate(UserCreateEvent e) {
+    public void handleUserCreated(UserCreatedEvent e) {
         Context context = new Context();
         context.setVariable("code", e.getCode());
         sendHtmlMessage(e.getEmail(), "Verify Email", "verify", context);
+    }
+
+    @EventListener
+    public void handleUserAddedToTask(UserAddedToTaskEvent e) {
+        Context context = new Context();
+        context.setVariable("givenUser", e.getTaskGivenUser());
+        context.setVariable("takenUser", e.getTaskTakenUser());
+        context.setVariable("task", e.getTask());
+        sendHtmlMessage(e.getTaskTakenUser().getEmail(), "New Task", "new-task", context);
     }
 
     @Override

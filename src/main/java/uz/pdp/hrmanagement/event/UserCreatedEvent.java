@@ -4,11 +4,11 @@ import lombok.Getter;
 import org.springframework.context.ApplicationEvent;
 
 @Getter
-public class UserCreateEvent extends ApplicationEvent {
+public class UserCreatedEvent extends ApplicationEvent {
     private final String email;
     private final String code;
 
-    public UserCreateEvent(Object source, String email, String code) {
+    public UserCreatedEvent(Object source, String email, String code) {
         super(source);
         this.email = email;
         this.code = code;

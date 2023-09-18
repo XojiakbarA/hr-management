@@ -2,22 +2,17 @@ package uz.pdp.hrmanagement;
 
 import java.time.Month;
 import java.time.Year;
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.pdp.hrmanagement.entity.Authority;
-import uz.pdp.hrmanagement.entity.Rate;
-import uz.pdp.hrmanagement.entity.Salary;
-import uz.pdp.hrmanagement.entity.User;
+import uz.pdp.hrmanagement.entity.*;
 import uz.pdp.hrmanagement.entity.enums.Grade;
 import uz.pdp.hrmanagement.entity.enums.Role;
-import uz.pdp.hrmanagement.service.AuthorityService;
-import uz.pdp.hrmanagement.service.RateService;
-import uz.pdp.hrmanagement.service.SalaryService;
-import uz.pdp.hrmanagement.service.UserService;
+import uz.pdp.hrmanagement.service.*;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -30,6 +25,8 @@ public class DataLoader implements CommandLineRunner {
     @Autowired
     private SalaryService salaryService;
     @Autowired
+    private TaskService taskService;
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
@@ -41,6 +38,17 @@ public class DataLoader implements CommandLineRunner {
         createEmployee();
         createEmployees();
         createSalaries();
+        createTask();
+    }
+
+    private void createTask() {
+        Task task = new Task();
+        task.setName("task1");
+        task.setDescription("desc1 desc1 desc1 desc1");
+        task.setDeadline(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24));
+        User givenUser = userService.findByEmail("manager@mail.com");
+        task.setUser(givenUser);
+        taskService.save(task);
     }
 
     private void createAuthorities() {
@@ -83,9 +91,9 @@ public class DataLoader implements CommandLineRunner {
     }
     private void createEmployee() {
         User user = new User();
-        user.setFirstName("employee");
-        user.setLastName("last");
-        user.setEmail("employee@mail.com");
+        user.setFirstName("zarina");
+        user.setLastName("akramova");
+        user.setEmail("zarinaakramova5@gmail.com");
         user.setPassword(passwordEncoder.encode("12345"));
         user.addAuthority(authorityService.findByName(Role.EMPLOYEE));
         user.setEnabled(true);
