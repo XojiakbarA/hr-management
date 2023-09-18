@@ -5,6 +5,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import uz.pdp.hrmanagement.entity.Authority;
 import uz.pdp.hrmanagement.entity.Rate;
 import uz.pdp.hrmanagement.entity.User;
 import uz.pdp.hrmanagement.entity.enums.Role;
+import uz.pdp.hrmanagement.event.AppEventPublisher;
 import uz.pdp.hrmanagement.mapper.UserMapper;
 import uz.pdp.hrmanagement.repository.UserRepository;
 import uz.pdp.hrmanagement.request.UserRequest;
@@ -38,6 +40,8 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private AppEventPublisher appEventPublisher;
 
     @Override
     public Page<UserDTO> getAll(Pageable pageable) {
@@ -60,7 +64,14 @@ public class UserServiceImpl implements UserService {
         setLastName(user, request.getLastName());
         setEmail(user, request.getEmail());
 
-        return userMapper.mapToUserDTO(save(user));
+        UUID uuid = UUID.randomUUID();
+        user.setVerifyCode(uuid);
+
+        UserDTO userDTO = userMapper.mapToUserDTO(save(user));
+
+        appEventPublisher.publishUserCreate(user.getEmail(), uuid.toString());
+
+        return userDTO;
     }
 
     @Override
@@ -135,6 +146,29 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public void verifyEmail(String password, String code) throws MailAuthenticationException {
+        if (password == null) {
+            throw new MailAuthenticationException("Verification failed");
+        }
+        UUID verifyCode;
+        try {
+            verifyCode = UUID.fromString(code);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            System.err.println(e.getMessage());
+            throw new MailAuthenticationException("Verification failed");
+        }
+        User user = userRepository.findByVerifyCode(verifyCode).orElseThrow(
+                () -> new MailAuthenticationException("Verification failed")
+        );
+        if (user.getPassword() != null) {
+            throw new MailAuthenticationException("Verification failed");
+        }
+        user.setPassword(passwordEncoder.encode(password));
+        user.setEnabled(true);
+        save(user);
+    }
+
     private void checkCurrentUserForAddRemove(Authority authority) {
         if (authority.getName().equals(Role.MANAGER) || authority.getName().equals(Role.DIRECTOR)) {
             boolean isDirector = authService.checkAuthority(Role.DIRECTOR);
@@ -156,11 +190,6 @@ public class UserServiceImpl implements UserService {
     private void setEmail(User user, String email) {
         if (email != null && !email.isBlank()) {
             user.setEmail(email);
-        }
-    }
-    private void setPassword(User user, String password) {
-        if (password != null && !password.isBlank()) {
-            user.setPassword(passwordEncoder.encode(password));
         }
     }
 }

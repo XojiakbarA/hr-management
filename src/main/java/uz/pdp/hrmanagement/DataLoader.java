@@ -2,6 +2,7 @@ package uz.pdp.hrmanagement;
 
 import java.time.Month;
 import java.time.Year;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -65,6 +66,7 @@ public class DataLoader implements CommandLineRunner {
         user.addAuthority(authorityService.findByName(Role.DIRECTOR));
         user.setEnabled(true);
         user.setRate(rateService.findAll().get(1));
+        user.setVerifyCode(UUID.randomUUID());
         userService.save(user);
     }
     private void createManager() {
@@ -76,6 +78,7 @@ public class DataLoader implements CommandLineRunner {
         user.addAuthority(authorityService.findByName(Role.MANAGER));
         user.setEnabled(true);
         user.setRate(rateService.findAll().get(1));
+        user.setVerifyCode(UUID.randomUUID());
         userService.save(user);
     }
     private void createEmployee() {
@@ -87,6 +90,7 @@ public class DataLoader implements CommandLineRunner {
         user.addAuthority(authorityService.findByName(Role.EMPLOYEE));
         user.setEnabled(true);
         user.setRate(rateService.findAll().get(1));
+        user.setVerifyCode(UUID.randomUUID());
         userService.save(user);
     }
     private void createEmployees() {
@@ -99,6 +103,7 @@ public class DataLoader implements CommandLineRunner {
             user.addAuthority(authorityService.findByName(Role.EMPLOYEE));
             user.setEnabled(true);
             user.setRate(rateService.findAll().get(i - 1));
+            user.setVerifyCode(UUID.randomUUID());
             userService.save(user);
         }
     }
@@ -110,6 +115,7 @@ public class DataLoader implements CommandLineRunner {
             User user = userService.findAll().get(i - 1);
             salary.setUser(user);
             salary.setValue(user.getRate().getGrade().getValue());
+            user.setVerifyCode(UUID.randomUUID());
             salaryService.save(salary);
         }
         for (int i = 2; i <= 4; i++) {
@@ -128,6 +134,7 @@ public class DataLoader implements CommandLineRunner {
             User user = userService.findAll().get(i - 1);
             salary.setUser(user);
             salary.setValue(user.getRate().getGrade().getValue());
+            user.setVerifyCode(UUID.randomUUID());
             salaryService.save(salary);
         }
     }

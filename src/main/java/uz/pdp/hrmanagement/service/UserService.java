@@ -2,6 +2,7 @@ package uz.pdp.hrmanagement.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.mail.MailAuthenticationException;
 import uz.pdp.hrmanagement.dto.UserDTO;
 import uz.pdp.hrmanagement.entity.User;
 import uz.pdp.hrmanagement.request.UserRequest;
@@ -22,4 +23,5 @@ public interface UserService {
     User findByEmail(String email);
     void deleteById(UUID id);
     User save(User user);
+    void verifyEmail(String password, String code) throws MailAuthenticationException;
 }
